@@ -9,6 +9,8 @@ const body = document.querySelector("body");
 const progressContainer = document.querySelector(".progress-container");
 const progress = document.querySelector(".progress");
 const volumeInput = document.querySelector("#volume");
+const span = document.querySelector("#span-volume");
+const volumeIcon = document.querySelector("#volume-icon");
 
 // const imgContainer = document.querySelector(".img-container");
 
@@ -37,10 +39,8 @@ btnNext.addEventListener("click", nextSong);
 btnPrev.addEventListener("click", prevSong);
 audio.addEventListener("timeupdate", progres);
 progressContainer.addEventListener("click", setProgress);
-volumeInput.addEventListener("input", (e) => {
-  console.log(volumeInput.value);
-  audio.volume = volumeInput.value / 10;
-});
+// volumeInput.addEventListener("input", (e) => {
+// });
 // Play Pause Next Functions
 function nextSong() {
   songIndex++;
@@ -114,3 +114,24 @@ function setProgress(e) {
   let width = this.clientWidth;
   audio.currentTime = (offsetX / width) * duration;
 }
+
+volumeInput.addEventListener("input", () => {
+  audio.volume = volumeInput.value / 10;
+  if (volumeInput.value == 0) {
+    span.innerHTML = ` <i id="volume-icon" class="fas fa-volume-mute"></i>`;
+  } else if (volumeInput.value < 5 && volumeInput.value > 0) {
+    span.innerHTML = ` <i id="volume-icon" class="fas fa-volume-low"></i>`;
+  } else {
+    span.innerHTML = ` <i id="volume-icon" class="fas fa-volume-high"></i>`;
+  }
+});
+
+volumeIcon.addEventListener("click", (e) => {
+  if (e.target.classList.contains("fa-volume-high")) {
+    e.target.classList.remove("fa-volume-high");
+    e.target.classList.add("fa-volume-mute");
+  } else {
+    e.target.classList.remove("fa-volume-mute");
+    e.target.classList.add("fa-volume-high");
+  }
+});
